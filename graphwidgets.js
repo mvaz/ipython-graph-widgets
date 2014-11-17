@@ -4,8 +4,10 @@ require(["//cdnjs.cloudflare.com/ajax/libs/d3/3.4.1/d3.min.js","widgets/js/widge
     var SigmajsWidgetView = IPython.DOMWidgetView.extend({
         render: function(){
             this.guid = 'graph' + IPython.utils.uuid();
-            this.$el.append('<script src="/js/sigma.min.js"/>');
-            this.$el.append('<script src="/js/sigma.layout.forceAtlas2.min.js"/>');
+            this.$el.append('<script src="js/sigma.min.js"/>');
+            this.$el.append('<script src="js/sigma.layout.forceAtlas2.min.js"/>');
+            this.$el.append('<script src="js/sigma.plugins.dragNodes.min.js"/>');
+
 
             this.$graph = $('<div />')
                 .attr('id', this.guid)
@@ -129,8 +131,12 @@ require(["//cdnjs.cloudflare.com/ajax/libs/d3/3.4.1/d3.min.js","widgets/js/widge
                 }]
             });
             this.s.refresh();
-            this.s.startForceAtlas2();
-            console.log(this.s);
+            this.s.startForceAtlas2({slowDown: 100000});
+            sigma.plugins.dragNodes(this.s, this.s.renderers[0]);
+
+            setTimeout(function() {
+              this.s.stopForceAtlas2();
+            }, 10.0);
 
             // this.$('.sigma-labels').each(function(i,x){ x.style.position = 'relative'; });
             // this.$('.sigma-scene').each(function(i,x){ x.style.position = 'relative'; });
@@ -139,12 +145,21 @@ require(["//cdnjs.cloudflare.com/ajax/libs/d3/3.4.1/d3.min.js","widgets/js/widge
 
         value_changed: function() {
             console.log("value_changed");
-            // var new_data = this.model.get("value");
+            var new_data = this.model.get("value");
+            console.log(new_data);
+
+            console.log(this.s.graph.nodes());
+            console.log("value_changed");
+            // var nodes = this.s.nodes();
+            // console.log(nodes);
+            // for (var i = nodes.length - 1; i >= 0; i--) {
+              // console.log(nodes[i]);
+            // };
 
             // var that = this;
             setTimeout(function() {
                 // this.s.stopForceAtlas2(); // 
-                console.log('xxxxx');
+                // console.log(this.s.graph.nodes());
             }, 1000);
         }
     });
