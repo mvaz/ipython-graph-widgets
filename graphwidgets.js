@@ -4,8 +4,8 @@ require(["//cdnjs.cloudflare.com/ajax/libs/d3/3.4.1/d3.min.js","widgets/js/widge
     var SigmajsWidgetView = IPython.DOMWidgetView.extend({
         render: function(){
             this.guid = 'graph' + IPython.utils.uuid();
-            this.$el.append('<script src="sigma.min.js"/>');
-            this.$el.append('<script src="sigma.layout.forceAtlas2.min.js"/>');
+            this.$el.append('<script src="/js/sigma.min.js"/>');
+            this.$el.append('<script src="/js/sigma.layout.forceAtlas2.min.js"/>');
 
             this.$graph = $('<div />')
                 .attr('id', this.guid)
@@ -130,44 +130,8 @@ require(["//cdnjs.cloudflare.com/ajax/libs/d3/3.4.1/d3.min.js","widgets/js/widge
             });
             this.s.refresh();
             this.s.startForceAtlas2();
+            console.log(this.s);
 
-// console.log('d');
-
-// this.s = new sigma(document.getElementById(this.guid));
-// console.log(this.s);
-
-// Then, let's add some data to display:
-// this.s.graph.addNode({
-//     // Main attributes:
-//     id: 'n0',
-//     label: 'Hello',
-//     // Display attributes:
-//     x: 0,
-//     y: 0,
-//     size: 1,
-//     color: '#f00'
-// }).addNode({
-//     // Main attributes:
-//     id: 'n1',
-//     label: 'World !',
-//     // Display attributes:
-//     x: 1,
-//     y: 1,
-//     size: 1,
-//     color: '#00f'
-// }).addEdge({
-//     id: 'e0',
-//     // Reference extremities:
-//     source: 'n0',
-//     target: 'n1',
-//     color: '#0f0'
-// });
-
-// console.log('refresh');
-// // Finally, let's ask our sigma instance to refresh:
-// this.s.refresh();
-// this.s.startForceAtlas2();
-// sigma-labels
             // this.$('.sigma-labels').each(function(i,x){ x.style.position = 'relative'; });
             // this.$('.sigma-scene').each(function(i,x){ x.style.position = 'relative'; });
             // this.$('.sigma-mouse').each(function(i,x){ x.style.position = 'relative'; });
