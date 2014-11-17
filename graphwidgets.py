@@ -1,6 +1,10 @@
 from IPython.html import widgets
 from IPython.utils.traitlets import Unicode, Dict, Int, List
 from IPython.display import display, Javascript
+import numpy as np
+from matplotlib.colors import ColorConverter, rgb2hex
+import seaborn as sns
+
 
 def publish_js():
     """ I am following the same scheme as 
@@ -19,12 +23,17 @@ class SigmajsWidget(widgets.DOMWidget):
     width = Int(default_value=600, sync=True)
     height = Int(default_value=600, sync=True)
 
+    def set_graph(self, graph):
+        from networkx.readwrite import json_graph
+        new_value = self.__convert_graph(graph)
+        self.value = new_value
 
-    def __convert_graph(g):
+    def __convert_graph(self, g):
     	from networkx.readwrite import json_graph
     	new_value = json_graph.node_link_data(g)
     	new_value['edges'] = new_value['links']
         new_value.pop('links', None)
+        p = sns.blend_palette(["mediumseagreen", "ghostwhite", "#4168B7"], 9, as_cmap=True)
         for n in new_value['nodes']:
             n['x'] = np.random.random()
             n['y'] = np.random.random()
