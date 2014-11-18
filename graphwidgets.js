@@ -146,25 +146,12 @@ require(["//cdnjs.cloudflare.com/ajax/libs/d3/3.4.1/d3.min.js","widgets/js/widge
         value_changed: function() {
             console.log("value_changed");
             var new_data = this.model.get("value");
-            
 
-            var nodes = this.s.graph.nodes();
-            var edges = this.s.graph.edges();
-
-            //
-            console.log("drop edges");
-            for (var i = edges.length - 1; i >= 0; i--) {
-              this.s.graph.dropEdge(edges[i].id);
-            };
-
-            console.log("add edges");
-            for (var i = new_data.edges.length - 1; i >= 0; i--) {
-              this.s.graph.addEdge(new_data.edges[i]);
-            };
+            this.s.graph.clear();
+            this.s.graph.read(new_data);
 
             console.log("value_changed");
 
-            // var that = this;
             setTimeout(function() {
                 // this.s.stopForceAtlas2(); // 
                 console.log("timeout");
