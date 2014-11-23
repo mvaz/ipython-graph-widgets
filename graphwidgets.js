@@ -1,22 +1,18 @@
 var s;
 require(["//cdnjs.cloudflare.com/ajax/libs/d3/3.4.1/d3.min.js","widgets/js/widget"], function(d3,WidgetManager){
 
-    // var 
-
     var SigmajsWidgetView = IPython.DOMWidgetView.extend({
         render: function(){
             this.guid = 'graph' + IPython.utils.uuid();
-            this.$el.append('<script src="js/sigma.min.js"/>');
-            this.$el.append('<script src="js/sigma.layout.forceAtlas2.min.js"/>');
-            this.$el.append('<script src="js/sigma.plugins.dragNodes.min.js"/>');
+            // this.$el.append('<script src="js/sigma.min.js"/>');
+            // this.$el.append('<script src="js/sigma.layout.forceAtlas2.min.js"/>');
+            // this.$el.append('<script src="js/sigma.plugins.dragNodes.min.js"/>');
 
 
             this.$graph = $('<div />')
                 .attr('id', this.guid)
                 .attr('class', 'graph')
                 .appendTo(this.$el);
-
-            // this.setElement($('<div />', {id: this.guid, 'class': 'graph'}));
 
             this.$el.css('position', 'relative');
 
@@ -54,7 +50,8 @@ require(["//cdnjs.cloudflare.com/ajax/libs/d3/3.4.1/d3.min.js","widgets/js/widge
                 }]
             });
             this.s.refresh();
-            this.s.startForceAtlas2({slowDown: this.model.get("slowDown")});
+            var slowdown = this.model.get("slowdown");
+            // this.s.startForceAtlas2({slowDown: slowdown});
             // sigma.plugins.dragNodes(this.s, this.s.renderers[0]);
 
             // setTimeout(function() {
@@ -70,10 +67,8 @@ require(["//cdnjs.cloudflare.com/ajax/libs/d3/3.4.1/d3.min.js","widgets/js/widge
           var isEmpty = function (val){
             return (val === undefined || val == null || val.length <= 0) ? true : false;
           };
-          console.log("value_changed");
-          console.log(this.s);
           var new_data = this.model.get("value");
-          console.log("new_data", new_data);
+          console.log("value_changed", this.s, new_data);
 
           for (var i = new_data.nodes.length - 1; i >= 0; i--) {
             var oldNode;
@@ -82,31 +77,29 @@ require(["//cdnjs.cloudflare.com/ajax/libs/d3/3.4.1/d3.min.js","widgets/js/widge
             if (!isEmpty(oldNode)){
               new_data.nodes[i].x = oldNode.x;
               new_data.nodes[i].y = oldNode.y;
-            };
+            } else {
+              new_data.nodes[i].x = 0.1;
+              new_data.nodes[i].y = 0.01;
+            }
+            ;
           };
           
-          // console.log("++ ", this.s.forceatlas2.isRunning);
-          console.log("stop force");
-          // this.s.stopForceAtlas2();
-          // console.log("++ ", this.s.forceatlas2.isRunning);
-          
+          console.log("clear");
 
           this.s.graph.clear();
-          this.s.refresh();
-
           this.s.graph.read(new_data);
           this.s.refresh();
 
-          this.s.startForceAtlas2({slowDown: this.model.get("slowDown")});
+          var slowdown = this.model.get("slowdown");
+          console.log('slowdown', slowdown);
+          this.s.startForceAtlas2({slowDown: slowdown});
           
-          
-// console.log("new data", "++++ ", this.s.forceatlas2.isRunning);
-          // setTimeout(function() {
+          setTimeout(function() {
             // this.s.refresh();
-              // this.s.startForceAtlas2({slowDown: 100000});
+              // this.s.startForceAtlas2({slowDown: 500000});
               // console.log("finished");
               // console.log("** ", this.s.isForceAtlas2Running());
-          // }, 1000);
+          }, 1000);
         }
     });
 
