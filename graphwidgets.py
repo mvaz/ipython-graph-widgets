@@ -18,10 +18,10 @@ def publish_js():
 
 class SigmajsWidget(widgets.DOMWidget):
     _view_name = Unicode('SigmajsWidgetView', sync=True)
-    value = Dict(default_value={'links':[], 'nodes':[]}, sync=True)
-
+    value = Dict(default_value={'edges':[], 'nodes':[{'id': 'e1', 'size':1, 'x': .1, 'y': .1}]}, sync=True)
     width = Int(default_value=600, sync=True)
     height = Int(default_value=600, sync=True)
+    slow_down = Int(default_value=50000, sync=True)
 
     def set_graph(self, graph):
         from networkx.readwrite import json_graph
