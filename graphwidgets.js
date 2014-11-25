@@ -16,21 +16,24 @@ require(["//cdnjs.cloudflare.com/ajax/libs/d3/3.4.1/d3.min.js","widgets/js/widge
 
             this.$el.css('position', 'relative');
 
+            this.isRunning = false;
+
             this.s = {};
 
             this.model.on('change:value', this.value_changed, this);
+            // this.model.on('change:width', this.update, this);
             
             // 
             // Wait for element to be added to the DOM            
             var that = this;
             setTimeout(function() {
-                that.update();
+                that._update();
                 that.render_graph();
             }, 0.01);
 
         },
 
-        update: function() {
+        _update: function() {
             console.log('>> update');
             this.$graph.css('width', this.model.get('width') + 'px');
             this.$graph.css('height', this.model.get('height') + 'px');
@@ -44,6 +47,7 @@ require(["//cdnjs.cloudflare.com/ajax/libs/d3/3.4.1/d3.min.js","widgets/js/widge
 
             this.s = new sigma({
                 graph: d,
+                skipErrors: true,
                 renderers: [{
                     container: document.getElementById(this.guid),
                     type: sigma.renderers.canvas //', // sigma.renderers.canvas works as well
@@ -64,35 +68,51 @@ require(["//cdnjs.cloudflare.com/ajax/libs/d3/3.4.1/d3.min.js","widgets/js/widge
         },
 
         value_changed: function() {
+
+          // PART 1
           var isEmpty = function (val){
             return (val === undefined || val == null || val.length <= 0) ? true : false;
           };
-          var new_data = this.model.get("value");
-          console.log("value_changed", this.s, new_data);
 
-          for (var i = new_data.nodes.length - 1; i >= 0; i--) {
-            var oldNode;
-            oldNode = this.s.graph.nodes(new_data.nodes[i].id);
+          if (this.isRunning) {
+            console.log("I'm busy");
+          }
+          else {
 
-            if (!isEmpty(oldNode)){
-              new_data.nodes[i].x = oldNode.x;
-              new_data.nodes[i].y = oldNode.y;
-            } else {
-              new_data.nodes[i].x = 0.1;
-              new_data.nodes[i].y = 0.01;
-            }
-            ;
+            this.isRunning = true;
+
+            var new_data = this.model.get("value");
+            console.log("value_changed", this.s, new_data);
+
+            for (var i = new_data.nodes.length - 1; i >= 0; i--) {
+              var oldNode;
+              oldNode = this.s.graph.nodes(new_data.nodes[i].id);
+
+              if (!isEmpty(oldNode)){
+                new_data.nodes[i].x = oldNode.x + 0.01 * Math.random();
+                new_data.nodes[i].y = oldNode.y + 0.01 * Math.random();
+              } else {
+                new_data.nodes[i].x = Math.random();
+                new_data.nodes[i].y = Math.random();
+              }
+              ;
+            };
+
+            // PART 2
+            console.log("clear");
+            this.s.stopForceAtlas2();
+            this.s.graph.clear();
+            
+            this.s.graph.read(new_data);
+            this.s.refresh();
+
+            var slowdown = this.model.get("slowdown");
+            console.log('slowdown', slowdown);
+            this.s.startForceAtlas2({slowDown: slowdown});            
+
+            this.isRunning = false;
           };
-          
-          console.log("clear");
 
-          this.s.graph.clear();
-          this.s.graph.read(new_data);
-          this.s.refresh();
-
-          var slowdown = this.model.get("slowdown");
-          console.log('slowdown', slowdown);
-          this.s.startForceAtlas2({slowDown: slowdown});
           
           setTimeout(function() {
             // this.s.refresh();
