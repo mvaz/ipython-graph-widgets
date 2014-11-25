@@ -102,13 +102,17 @@ require(["//cdnjs.cloudflare.com/ajax/libs/d3/3.4.1/d3.min.js","widgets/js/widge
             console.log("clear");
             this.s.stopForceAtlas2();
             this.s.graph.clear();
-            
+
             this.s.graph.read(new_data);
             this.s.refresh();
 
             var slowdown = this.model.get("slowdown");
             console.log('slowdown', slowdown);
-            this.s.startForceAtlas2({slowDown: slowdown});            
+            this.s.startForceAtlas2({
+              slowDown: slowdown,
+              adjustSizes: true,
+              linLogMode: true
+            });            
 
             this.isRunning = false;
           };

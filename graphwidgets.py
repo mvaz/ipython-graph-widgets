@@ -38,7 +38,7 @@ class SigmajsWidget(widgets.DOMWidget):
             n['x'] = np.random.random()
             n['y'] = np.random.random()
             n['color'] = rgb2hex( p( np.random.random()) ).decode("ascii")
-            n['size'] = 1
+            n['size'] = 0.5
             n['id'] = "n%d"% n['id']
 
         for e in new_value["edges"]:
