@@ -43,7 +43,7 @@ class SigmajsWidget(widgets.DOMWidget):
             n['id'] = "n%d"% n['id']
 
         for e in new_value["edges"]:
-        	e['id'] = 'e%d%d'  % (e['source'], e['target'])
+        	e['id'] = 'e%d=%d'  % (e['source'], e['target'])
         	e['source'] = "n%d"% e['source']
         	e['target'] = "n%d"% e['target']
 
