@@ -53,6 +53,15 @@ require(["//cdnjs.cloudflare.com/ajax/libs/d3/3.4.1/d3.min.js","widgets/js/widge
                     type: sigma.renderers.canvas //', // sigma.renderers.canvas works as well
                 }]
             });
+
+            var that = this;
+            this.s.bind('clickNode', function(ev) {
+              var nodeIdx = ev.data.node.id;
+              console.log('clickNode', nodeIdx);
+              that.model.set('selected_node', nodeIdx);
+              that.touch();
+            });
+
             this.s.refresh();
             var slowdown = this.model.get("slowdown");
             // this.s.startForceAtlas2({slowDown: slowdown});
@@ -104,6 +113,7 @@ require(["//cdnjs.cloudflare.com/ajax/libs/d3/3.4.1/d3.min.js","widgets/js/widge
             this.s.graph.clear();
 
             this.s.graph.read(new_data);
+
             this.s.refresh();
 
             var slowdown = this.model.get("slowdown");

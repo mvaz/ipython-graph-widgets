@@ -22,6 +22,7 @@ class SigmajsWidget(widgets.DOMWidget):
     width = Int(default_value=600, sync=True)
     height = Int(default_value=600, sync=True)
     slowdown = Int(default_value=50000, sync=True)
+    selected_node = Unicode(sync=True)
 
     def set_graph(self, graph):
         from networkx.readwrite import json_graph
