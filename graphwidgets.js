@@ -1,7 +1,10 @@
 var s;
-require(["//cdnjs.cloudflare.com/ajax/libs/d3/3.4.1/d3.min.js","widgets/js/widget"], function(d3,WidgetManager){
+require(["//cdnjs.cloudflare.com/ajax/libs/d3/3.4.1/d3.min.js",
+    "nbextensions/widgets/widgets/js/widget",
+    "nbextensions/widgets/widgets/js/manager"],
+    function(d3, widget, manager){
 
-    var SigmajsWidgetView = IPython.DOMWidgetView.extend({
+    var SigmajsWidgetView = widget.DOMWidgetView.extend({
         render: function(){
             this.guid = 'graph' + IPython.utils.uuid();
             // this.$el.append('<script src="js/sigma.min.js"/>');
@@ -137,7 +140,7 @@ require(["//cdnjs.cloudflare.com/ajax/libs/d3/3.4.1/d3.min.js","widgets/js/widge
         }
     });
 
-    WidgetManager.register_widget_view('SigmajsWidgetView', SigmajsWidgetView);
+    manager.WidgetManager.register_widget_view('SigmajsWidgetView', SigmajsWidgetView);
 });
 
 

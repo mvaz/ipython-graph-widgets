@@ -1,5 +1,7 @@
-from IPython.html import widgets
-from IPython.utils.traitlets import Unicode, Dict, Int, List
+# from IPython.html import widgets
+from ipywidgets import widgets
+# from IPython.utils.traitlets import Unicode, Dict, Int, List
+from traitlets import Unicode, Dict, Int, List
 from IPython.display import display, Javascript
 import numpy as np
 from matplotlib.colors import ColorConverter, rgb2hex
@@ -30,22 +32,22 @@ class SigmajsWidget(widgets.DOMWidget):
         self.value = new_value
 
     def __convert_graph(self, g):
-    	from networkx.readwrite import json_graph
-    	new_value = json_graph.node_link_data(g)
-    	new_value['edges'] = new_value['links']
+        from networkx.readwrite import json_graph
+        new_value = json_graph.node_link_data(g)
+        new_value['edges'] = new_value['links']
         new_value.pop('links', None)
         p = sns.blend_palette(["mediumseagreen", "ghostwhite", "#4168B7"], 9, as_cmap=True)
         for n in new_value['nodes']:
             n['x'] = np.random.random()
             n['y'] = np.random.random()
-            n['color'] = rgb2hex( p( np.random.random()) ).decode("ascii")
+            n['color'] = rgb2hex( p( np.random.random()) )#.decode("ascii")
             n['size'] = 0.5
             n['id'] = "n%d"% n['id']
 
         for e in new_value["edges"]:
-        	e['id'] = 'e%d=%d'  % (e['source'], e['target'])
-        	e['source'] = "n%d"% e['source']
-        	e['target'] = "n%d"% e['target']
+            e['id'] = 'e%d=%d'  % (e['source'], e['target'])
+            e['source'] = "n%d"% e['source']
+            e['target'] = "n%d"% e['target']
 
-        return dict(filter(lambda x: x[0] in ['nodes', 'edges'], new_value.iteritems()))
+        return dict(filter(lambda x: x[0] in ['nodes', 'edges'], new_value.items()))
 
