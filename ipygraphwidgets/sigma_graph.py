@@ -8,15 +8,15 @@ from matplotlib.colors import ColorConverter, rgb2hex
 import seaborn as sns
 
 
-def publish_js():
-    """ I am following the same scheme as 
-    https://github.com/jdfreder/ipython-d3/
-    """
-    import os
-    directory = os.path.dirname(os.path.realpath(__file__))
+# def publish_js():
+#     """ I am following the same scheme as 
+#     https://github.com/jdfreder/ipython-d3/
+#     """
+#     import os
+#     directory = os.path.dirname(os.path.realpath(__file__))
 
-    with open(os.path.join(directory,'graphwidgets.js'), 'r') as f:
-        display(Javascript(data=f.read()))
+#     with open(os.path.join(directory,'graphwidgets.js'), 'r') as f:
+#         display(Javascript(data=f.read()))
 
 class SigmajsWidget(widgets.DOMWidget):
     _view_name = Unicode('SigmajsWidgetView', sync=True)
